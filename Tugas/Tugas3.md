@@ -1,4 +1,6 @@
 # Tugas 3 - Presensi API
+# Nama: Zahwa Anritia
+# NIM: 20230140116
 
 ## Check-In
 ![Check-in 1](./Check-in1.png)
