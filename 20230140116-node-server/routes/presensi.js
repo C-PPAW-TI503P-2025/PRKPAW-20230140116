@@ -23,9 +23,9 @@ const validatePresensiUpdate = [
   },
 ];
 
-router.post("/checkin", permission.addUserData, permission.isAdmin, presensiController.CheckIn);
-router.post("/checkout", permission.addUserData, permission.isAdmin, presensiController.CheckOut);
-router.put("/:id", permission.addUserData, permission.isAdmin, validatePresensiUpdate, presensiController.updatePresensi);
-router.delete("/:id", permission.addUserData, permission.isAdmin, presensiController.deletePresensi);
+router.post("/checkin", permission.authenticateToken, presensiController.CheckIn);
+router.post("/checkout", permission.authenticateToken, presensiController.CheckOut);
 
+router.put("/:id", permission.authenticateToken, permission.isAdmin, validatePresensiUpdate, presensiController.updatePresensi);
+router.delete("/:id", permission.authenticateToken, permission.isAdmin, presensiController.deletePresensi);
 module.exports = router;

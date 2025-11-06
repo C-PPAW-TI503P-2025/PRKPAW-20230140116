@@ -6,27 +6,27 @@ exports.getDailyReport = async (req, res) => {
     const { nama, tanggalMulai, tanggalSelesai } = req.query;
     let options = { where: {} };
 
-    // Filter berdasarkan nama (LIKE search)
+   
     if (nama) {
       options.where.nama = {
-        [Op.like]: `%${nama}%`, // ✅ Fix: tambahkan backtick dan ${}
+        [Op.like]: `%${nama}%`, 
       };
     }
 
-    // Filter berdasarkan rentang tanggal
+    
     if (tanggalMulai && tanggalSelesai) {
-      // Jika kedua tanggal ada, gunakan Op.between
+      
       const startDate = new Date(tanggalMulai);
-      startDate.setHours(0, 0, 0, 0); // Set ke awal hari
+      startDate.setHours(0, 0, 0, 0); 
       
       const endDate = new Date(tanggalSelesai);
-      endDate.setHours(23, 59, 59, 999); // Set ke akhir hari
+      endDate.setHours(23, 59, 59, 999); 
       
       options.where.checkIn = {
         [Op.between]: [startDate, endDate]
       };
     } else if (tanggalMulai) {
-      // Jika hanya tanggal mulai, filter >= tanggalMulai
+      
       const startDate = new Date(tanggalMulai);
       startDate.setHours(0, 0, 0, 0);
       
@@ -34,7 +34,7 @@ exports.getDailyReport = async (req, res) => {
         [Op.gte]: startDate
       };
     } else if (tanggalSelesai) {
-      // Jika hanya tanggal selesai, filter <= tanggalSelesai
+      
       const endDate = new Date(tanggalSelesai);
       endDate.setHours(23, 59, 59, 999);
       
@@ -43,12 +43,12 @@ exports.getDailyReport = async (req, res) => {
       };
     }
 
-    // Query database
+    
     const records = await Presensi.findAll(options);
 
-    // Response
+   
     res.json({
-      reportDate: new Date().toISOString(), // ✅ Better: gunakan ISO format
+      reportDate: new Date().toISOString(), 
       totalRecords: records.length,
       filters: {
         nama: nama || null,
@@ -58,7 +58,7 @@ exports.getDailyReport = async (req, res) => {
       data: records,
     });
   } catch (error) {
-    console.error("Error getDailyReport:", error); // ✅ Tambah logging
+    console.error("Error getDailyReport:", error); 
     res.status(500).json({ 
       message: "Gagal mengambil laporan", 
       error: error.message 

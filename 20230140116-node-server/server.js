@@ -11,6 +11,7 @@ const bookRoutes = require("./routes/books");
 const presensiRoutes = require("./routes/presensi");
 const reportRoutes = require("./routes/reports");
 
+const authRoutes = require("./routes/auth");
 // Middleware
 app.use(cors());
 app.use(helmet());
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 app.use("/api/books", bookRoutes);
 app.use("/api/presensi", presensiRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/auth", authRoutes);
 
 // 404 Handler
 app.use((req, res) => {
