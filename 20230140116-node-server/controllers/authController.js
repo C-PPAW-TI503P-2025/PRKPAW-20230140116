@@ -67,10 +67,11 @@ if (!isMatch) {
 
 
 const token = jwt.sign(
-  { id: user.id, role: user.role, nama: user.nama },
-  JWT_SECRET,
-  { expiresIn: "1d" }
+  { id: user.id, nama: user.nama, email: user.email, role: user.role },
+  "secretkey",
+  { expiresIn: "1h" }
 );
+
 
 res.json({
   message: "Login berhasil",
@@ -79,10 +80,16 @@ res.json({
 
 
 } catch (error) {
-console.log("LOGIN ERROR:", error);
-res.status(500).json({
-message: "Terjadi kesalahan pada server",
-error: error.message
-});
+  console.log("🔥 REGISTER ERROR:", error);  // <--- tambahkan ini biar detail keluar
+
+  if (error.name === 'SequelizeUniqueConstraintError') {
+    return res.status(400).json({ message: "Email sudah terdaftar." });
+  }
+
+  return res.status(500).json({
+    message: "Terjadi kesalahan pada server",
+    error: error.message
+  });
 }
+
 };
