@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = "INI_ADALAH_KUNCI_RAHASIA_ANDA_YANG_SANGAT_AMAN"; 
+const { JWT_SECRET } = require("../config/jwt"); // ✅ Import dari config
 
 exports.authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -9,8 +9,9 @@ exports.authenticateToken = (req, res, next) => {
     return res.status(401).json({ message: "Akses ditolak: Token tidak ada." });
   }
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
+      console.log("🔥 JWT VERIFY ERROR:", err.message);
       return res.status(403).json({ message: "Token tidak valid." });
     }
 
@@ -29,10 +30,10 @@ exports.isAdmin = (req, res, next) => {
 
 exports.isMahasiswa = (req, res, next) => {
   if (req.user && req.user.role === "mahasiswa") {
-    console.log("Middleware: Izin mahasiswa diberikan.");
+    console.log("✅ Middleware: Izin mahasiswa diberikan.");
     next();
   } else {
-    console.log("Middleware: Gagal! Pengguna bukan mahasiswa.");
+    console.log("❌ Middleware: Gagal! Pengguna bukan mahasiswa.");
     return res.status(403).json({ message: "Akses ditolak: Hanya untuk mahasiswa" });
   }
 };

@@ -1,43 +1,39 @@
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const helmet = require("helmet");
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { sequelize } = require('./models');
+
+const authRoutes = require('./routes/auth');
+const presensiRoutes = require('./routes/presensi');
+const reportRoutes = require('./routes/reports'); // ✅ TAMBAHKAN INI
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-// Import routers
-const bookRoutes = require("./routes/books");
-const presensiRoutes = require("./routes/presensi");
-const reportRoutes = require("./routes/reports");
-
-const authRoutes = require("./routes/auth");
 // Middleware
 app.use(cors());
-app.use(helmet());
-app.use(express.json());
-app.use(morgan("dev"));
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Home Page for API");
+app.use('/api/auth', authRoutes);
+app.use('/api/presensi', presensiRoutes);
+app.use('/api/reports', reportRoutes); // ✅ TAMBAHKAN INI
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ message: '🚀 Presensi API is running!' });
 });
 
-app.use("/api/books", bookRoutes);
-app.use("/api/presensi", presensiRoutes);
-app.use("/api/reports", reportRoutes);
-app.use("/api/auth", authRoutes);
-
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
-});
-
-app.listen(PORT, () => {
-  console.log(`Express server running at http://localhost:${PORT}/`);
-});
-
+// Sync database dan start server
+sequelize.sync({ alter: true })
+  .then(() => {
+    console.log('✅ Database synced successfully');
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('❌ Database sync error:', err);
+  });

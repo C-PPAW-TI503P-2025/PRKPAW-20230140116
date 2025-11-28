@@ -23,9 +23,15 @@ const validatePresensiUpdate = [
   },
 ];
 
-router.post("/checkin", permission.authenticateToken, presensiController.CheckIn);
-router.post("/checkout", permission.authenticateToken, presensiController.CheckOut);
+// ✅ PERBAIKAN: Ubah nama endpoint dan method
+router.post("/checkin", permission.authenticateToken, presensiController.CheckIn);  // ✅ Lowercase + POST
+router.post("/checkout", permission.authenticateToken, presensiController.CheckOut); // ✅ Lowercase + POST
 
+// Route untuk get presensi user yang login
+router.get("/", permission.authenticateToken, presensiController.getMyPresensi);
+
+// Routes admin untuk update dan delete
 router.put("/:id", permission.authenticateToken, permission.isAdmin, validatePresensiUpdate, presensiController.updatePresensi);
 router.delete("/:id", permission.authenticateToken, permission.isAdmin, presensiController.deletePresensi);
+
 module.exports = router;

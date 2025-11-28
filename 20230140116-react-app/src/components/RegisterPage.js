@@ -1,10 +1,11 @@
-// src/components/RegisterPage.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
-  const [nama, setNama] = useState("");
+  // ❌ Hapus state nama
+  // const [nama, setNama] = useState("");
+  
   const [role, setRole] = useState("mahasiswa");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,13 +19,13 @@ function RegisterPage() {
 
     try {
       await axios.post("http://localhost:3001/api/auth/register", {
-        nama,
+        // ❌ Hapus nama dari request
         role,
         email,
         password,
       });
 
-      setSuccessMsg(true); // munculkan modal
+      setSuccessMsg(true);
       setTimeout(() => navigate("/login"), 1500);
 
     } catch (err) {
@@ -43,7 +44,8 @@ function RegisterPage() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          {/* ❌ HAPUS INPUT NAMA */}
+          {/* <div>
             <label className="block text-sm font-medium text-pink-700">
               Nama
             </label>
@@ -53,7 +55,7 @@ function RegisterPage() {
               required
               className="mt-1 w-full px-3 py-2 border border-pink-300 rounded-lg focus:ring-pink-400 focus:border-pink-400"
             />
-          </div>
+          </div> */}
 
           <div>
             <label className="block text-sm font-medium text-pink-700">
@@ -115,7 +117,6 @@ function RegisterPage() {
         </p>
       </div>
 
-      {/* 🎀 POPUP SUCCESS */}
       {successMsg && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center">
           <div className="bg-white p-6 rounded-2xl shadow-lg border-2 border-pink-300 text-center animate-bounce">

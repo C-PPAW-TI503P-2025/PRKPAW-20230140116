@@ -32,7 +32,7 @@ function LoginPage() {
     <div className="min-h-screen bg-pink-100 flex items-center justify-center px-4">
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-pink-200">
         <h2 className="text-3xl font-extrabold text-center text-pink-600 mb-6">
-          Login 💗
+          Login 
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
