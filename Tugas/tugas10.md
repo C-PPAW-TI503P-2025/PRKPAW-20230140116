@@ -6,7 +6,7 @@
 ![laporan](imagestugas10/laporan.png)
 
 ## Foto Ukuran penuh saat diklik
-![chefotockin](imagestugas10/fotozoom.png)
+![foto](imagestugas10/fotozoom.png)
 
 ## Database
 ![presensi](imagestugas10/database.png)
