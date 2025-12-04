@@ -4,10 +4,10 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Presensi extends Model {
     static associate(models) {
-      // ✅ Kunci perbaikan error 500: Mendefinisikan relasi ke model User
+      // ✅ Relasi ke model User
       Presensi.belongsTo(models.User, {
         foreignKey: 'userId',
-        as: 'user' // Alias ini harus SAMA dengan yang di presensiController.js
+        as: 'user'
       });
     }
   }
@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     longitude: {
       type: DataTypes.DOUBLE,
+      allowNull: true
+    },
+    buktiFoto: {  // ✅ TAMBAHAN KOLOM BARU
+      type: DataTypes.STRING,
       allowNull: true
     }
   }, {

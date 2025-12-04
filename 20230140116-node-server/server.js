@@ -6,7 +6,7 @@ const { sequelize } = require('./models');
 
 const authRoutes = require('./routes/auth');
 const presensiRoutes = require('./routes/presensi');
-const reportRoutes = require('./routes/reports'); // ✅ TAMBAHKAN INI
+const reportRoutes = require('./routes/reports'); 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/presensi', presensiRoutes);
-app.use('/api/reports', reportRoutes); // ✅ TAMBAHKAN INI
+app.use('/api/reports', reportRoutes); 
 
 // Root route
 app.get('/', (req, res) => {
@@ -37,3 +37,7 @@ sequelize.sync({ alter: true })
   .catch(err => {
     console.error('❌ Database sync error:', err);
   });
+
+  const path = require('path'); 
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

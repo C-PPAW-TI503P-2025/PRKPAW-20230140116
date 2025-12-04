@@ -23,9 +23,16 @@ const validatePresensiUpdate = [
   },
 ];
 
-// ✅ PERBAIKAN: Ubah nama endpoint dan method
-router.post("/checkin", permission.authenticateToken, presensiController.CheckIn);  // ✅ Lowercase + POST
-router.post("/checkout", permission.authenticateToken, presensiController.CheckOut); // ✅ Lowercase + POST
+// ✅ CHECK-IN dengan upload foto (TAMBAHAN MIDDLEWARE MULTER)
+router.post(
+  "/checkin", 
+  permission.authenticateToken, 
+  presensiController.upload.single('image'),  // ⬅️ TAMBAHKAN BARIS INI
+  presensiController.CheckIn
+);
+
+// ✅ CHECK-OUT (tanpa foto)
+router.post("/checkout", permission.authenticateToken, presensiController.CheckOut);
 
 // Route untuk get presensi user yang login
 router.get("/", permission.authenticateToken, presensiController.getMyPresensi);

@@ -1,6 +1,29 @@
 const { Presensi, User } = require("../models");
 const { format } = require("date-fns-tz");
+const multer = require('multer');
+const path = require('path');
 const timeZone = "Asia/Jakarta";
+
+// ======================= KONFIGURASI MULTER ==========================
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); 
+  },
+  filename: (req, file, cb) => {
+    // Format nama file: userId-timestamp.jpg
+    cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Hanya file gambar yang diperbolehkan!'), false);
+  }
+};
+
+exports.upload = multer({ storage: storage, fileFilter: fileFilter });
 
 // ======================= CHECK-IN ==========================
 exports.CheckIn = async (req, res) => {
@@ -12,6 +35,9 @@ exports.CheckIn = async (req, res) => {
 
     // Lokasi (optional)
     const { latitude, longitude } = req.body;
+    
+    // Ambil path foto jika ada
+    const buktiFoto = req.file ? req.file.path : null;
 
     // Cek apakah user belum checkout
     const existing = await Presensi.findOne({
@@ -30,6 +56,7 @@ exports.CheckIn = async (req, res) => {
       checkIn: now,
       latitude: latitude || null,
       longitude: longitude || null,
+      buktiFoto: buktiFoto // Simpan path foto
     });
 
     res.status(201).json({
@@ -41,6 +68,7 @@ exports.CheckIn = async (req, res) => {
         }),
         latitude: newRecord.latitude,
         longitude: newRecord.longitude,
+        buktiFoto: newRecord.buktiFoto
       },
     });
   } catch (err) {
@@ -105,7 +133,7 @@ exports.getMyPresensi = async (req, res) => {
         {
           model: User,
           as: "user",
-          attributes: ["id", "email", "role"], // ✅ HAPUS "nama"
+          attributes: ["id", "email", "role"],
         },
       ],
       order: [["checkIn", "DESC"]],
