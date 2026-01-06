@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { Link } from "react-router-dom";
+
+
 function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,6 +62,7 @@ function Navbar({ user, onLogout }) {
               </>
             )}
           </div>
+          <Link to="/monitoring" className="...">Monitoring Suhu</Link>
 
           <div className="flex items-center space-x-4">
             {user ? (

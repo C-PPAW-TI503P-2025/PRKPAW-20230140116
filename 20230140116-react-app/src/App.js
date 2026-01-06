@@ -9,6 +9,8 @@ import AttendancePage from "./components/AttendancePage";
 import ReportPage from "./components/ReportPage.js"; // ✅ Import ReportPage
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import SensorPage from "./components/SensorPage";
+
 
 function App() {
   const token = localStorage.getItem("token");
@@ -37,6 +39,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/monitoring" element={<SensorPage />} />
 
         <Route
           path="/dashboard"
