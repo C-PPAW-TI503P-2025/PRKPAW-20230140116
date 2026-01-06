@@ -7,3 +7,4 @@
 
 ![terminal](./1314/13.2.jpeg)
 
+![terminal](./1314/14%20(2).jpeg)
